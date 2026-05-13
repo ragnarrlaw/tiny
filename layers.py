@@ -3,7 +3,14 @@ from typing import Callable, Dict, List, Tuple, Set
 from typing_extensions import override
 import numpy as np
 from numpy.typing import NDArray
-from activations import relu, relu_derivative, sigmoid, sigmoid_derivative, tanh, tanh_derivative
+from activations import (
+    relu,
+    relu_derivative,
+    sigmoid,
+    sigmoid_derivative,
+    tanh,
+    tanh_derivative,
+)
 
 
 class Layer(ABC):
@@ -169,3 +176,32 @@ class Dense(Layer):
             self.bias = np.zeros(1).astype(np.float32)
 
 
+class Conv2DLayer(Layer):
+
+    def __init__(
+        self,
+        kernels: int,
+        kernel_size: Tuple[int, int],
+        name: str,
+    ) -> None:
+        super().__init__(layer_type="conv2d", name=name)
+        self.no_kernels = kernels
+        self.kernel_size = kernel_size
+
+    @override
+    def forward(self, inputs: NDArray[np.float32]) -> NDArray[np.float32]:
+        return super().forward(inputs)
+
+    @staticmethod
+    def im2col():
+        """image to column - extract the patches"""
+        pass
+
+    @override
+    def backward(
+        self,
+        alpha: float,
+        batch_size: int,
+        error_signal: NDArray[np.float32],
+    ) -> NDArray[np.float32]:
+        return super().backward(alpha, batch_size, error_signal)
